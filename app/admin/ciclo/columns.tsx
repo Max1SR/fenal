@@ -3,9 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react"; // Icono de flechas
 import { Button } from "@/components/ui/button";
-import CicloActions from "@/components/ui/ciclo/CicloActions"; // Tu componente de acciones
+import CicloActions from "@/components/ui/ciclo/CicloActions";
 
-// Definimos la forma de tus datos (igual que en tu page.tsx)
 export type Ciclo = {
   id_ciclo: number;
   nombre: string;
@@ -14,13 +13,11 @@ export type Ciclo = {
 export const columns: ColumnDef<Ciclo>[] = [
   {
     accessorKey: "id_ciclo",
-    // ANTES: header: "ID",
-    // AHORA: Lo convertimos en un botón interactivo igual que el nombre
+    
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          // Al hacer click, alterna entre ascendente y descendente
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           ID
@@ -31,7 +28,6 @@ export const columns: ColumnDef<Ciclo>[] = [
   },
   {
     accessorKey: "nombre",
-    // HEADER PERSONALIZADO: En vez de texto plano, ponemos un botón
     header: ({ column }) => {
       return (
         <Button
@@ -47,9 +43,7 @@ export const columns: ColumnDef<Ciclo>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const ciclo = row.original; // Accedemos al objeto sala completo de esta fila
-
-      // Aquí renderizamos tus acciones (Editar/Borrar)
+      const ciclo = row.original;
       return <CicloActions ciclo={ciclo} />;
     },
   },

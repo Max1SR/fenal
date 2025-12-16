@@ -9,7 +9,6 @@ import UpdateEventoForm from "@/components/ui/evento/UpdateEventoForm";
 import { DeleteEventoDialog } from "@/components/ui/evento/DeleteEventoDialog";
 
 export default function EventoActions({ evento }: { evento: any }) {
-  // Estado para abrir/cerrar el modal de edición
   const [open, setOpen] = useState(false);
 
   return (
@@ -24,15 +23,12 @@ export default function EventoActions({ evento }: { evento: any }) {
         Editar
       </Button>
 
-      {/* 2. EL FORMULARIO MODAL */}
-      {/* Se renderiza aquí pero solo se muestra cuando 'open' es true */}
+      
       <UpdateEventoForm
         open={open}
         onOpenChange={setOpen}
         eventoToEdit={evento}
       />
-
-      {/* 3. BOTÓN BORRAR */}
       <DeleteEventoDialog id={evento.id_evento} />
     </div>
   );

@@ -47,12 +47,11 @@ export default async function SalasPage() {
           </Dialog>
         </div>
 
-        {/* --- LA NUEVA TABLA PODEROSA --- */}
-        {/* Simplemente le pasamos las definiciones (columnas) y los datos (salas) */}
+     
         <DataTable
           columns={columns}
           data={salas}
-          searchKey="nombre" // <--- Aquí le dices que filtre por la columna "nombre"
+          searchKey="nombre" //que filtre por la columna "nombre"
           w="w-xl"
         />
       </div>

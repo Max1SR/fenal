@@ -12,7 +12,7 @@ export default function TipoActions({ tipo }: { tipo: any }) {
 
   return (
     <div className="flex gap-2 justify-end items-center">
-      {/* 1. BOTÓN PARA ABRIR EL MODAL DE EDICIÓN */}
+
       <Button
         variant="outline"
         size="sm"
@@ -24,15 +24,11 @@ export default function TipoActions({ tipo }: { tipo: any }) {
       </Button>
 
       <UpdateTipoForm open={open} onOpenChange={setOpen} tipoToEdit={tipo} />
-
-      {/* 2. EL FORMULARIO (Ahora sí le pasamos los datos) */}
       <UpdateTipoForm
         open={open} // Le decimos si debe mostrarse
         onOpenChange={setOpen} // Le damos el control para cerrarse
         tipoToEdit={tipo} // Le pasamos los datos de la tipo
       />
-
-      {/* 3. BOTÓN BORRAR (El que ya tenías) */}
       <DeleteTipoDialog id={tipo.id_tipo}/>
     </div>
   );

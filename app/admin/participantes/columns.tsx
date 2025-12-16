@@ -3,9 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react"; // Icono de flechas
 import { Button } from "@/components/ui/button";
-import PerActions from "@/components/ui/persona/PerActions"; // Tu componente de acciones
+import PerActions from "@/components/ui/persona/PerActions"; 
 
-// Definimos la forma de tus datos (igual que en tu page.tsx)
 export type Persona = {
   id_persona: number;
   nombre: string;
@@ -18,7 +17,6 @@ export const columns: ColumnDef<Persona>[] = [
       return (
         <Button
           variant="ghost"
-          // Al hacer click, alterna entre ascendente y descendente
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           ID
@@ -29,7 +27,6 @@ export const columns: ColumnDef<Persona>[] = [
   },
   {
     accessorKey: "nombre",
-    // HEADER PERSONALIZADO: En vez de texto plano, ponemos un botón
     header: ({ column }) => {
       return (
         <Button
@@ -44,7 +41,6 @@ export const columns: ColumnDef<Persona>[] = [
   },
   {
     accessorKey: "apellidoPaterno",
-    // HEADER PERSONALIZADO: En vez de texto plano, ponemos un botón
     header: ({ column }) => {
       return (
         <Button
@@ -59,7 +55,6 @@ export const columns: ColumnDef<Persona>[] = [
   },
   {
     accessorKey: "apellidoMaterno",
-    // HEADER PERSONALIZADO: En vez de texto plano, ponemos un botón
     header: ({ column }) => {
       return (
         <Button
@@ -75,9 +70,7 @@ export const columns: ColumnDef<Persona>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const persona = row.original; // Accedemos al objeto persona completo de esta fila
-
-      // Aquí renderizamos tus acciones (Editar/Borrar)
+      const persona = row.original; 
       return <PerActions persona={persona} />;
     },
   },

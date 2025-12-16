@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react"; // Icono de basurero
-import { toast } from "sonner"; // Usamos tus notificaciones pro
+import { toast } from "sonner"; 
 
 import {
   AlertDialog,
@@ -56,7 +56,6 @@ export function DeleteSalaDialog({ id }: DeleteSalaProps) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      {/* EL GATILLO: El botón rojo que aparecerá en la tabla */}
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
@@ -67,8 +66,6 @@ export function DeleteSalaDialog({ id }: DeleteSalaProps) {
           Borrar
         </Button>
       </AlertDialogTrigger>
-
-      {/* EL CONTENIDO DE LA ALERTA */}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
@@ -81,7 +78,6 @@ export function DeleteSalaDialog({ id }: DeleteSalaProps) {
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
 
-          {/* Botón de confirmación */}
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault(); // Evitamos que se cierre solo

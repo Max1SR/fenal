@@ -26,7 +26,6 @@ export default async function SalasPage() {
   return (
     <main className="flex min-h-screen flex-col items-center p-6 px-10">
       <div className="w-full max-w-4xl">
-        {/* ENCABEZADO (Esto queda igual) */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Gestión de Participantes</h1>
 

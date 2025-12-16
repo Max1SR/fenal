@@ -30,8 +30,6 @@ const formSchema = z.object({
   }),
 });
 
-// NOTA: 'any' usado temporalmente en props para evitar errores de tipo rápido,
-// puedes usar la interfaz correcta si prefieres.
 export default function UpdateTipoForm({
   open,
   onOpenChange,

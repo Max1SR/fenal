@@ -11,15 +11,11 @@ interface Props {
 // ==========================================
 export async function PUT(request: Request, { params }: Props) {
   try {
-    // 1. Desempaquetamos el ID (esperando la promesa)
     const { id } = await params;
     const idNumero = parseInt(id);
-
-    // 2. Leemos los datos nuevos
     const body = await request.json();
     const { rango } = body;
 
-    // Validación básica
     if (!rango) {
       return NextResponse.json(
         { message: "El rango es obligatorio" },
@@ -27,13 +23,11 @@ export async function PUT(request: Request, { params }: Props) {
       );
     }
 
-    // 3. Ejecutamos la actualización en MySQL
     const result: any = await query({
       query: "UPDATE clasificacion SET rango = ? WHERE id_clasificacion = ?",
-      values: [rango, idNumero], // Importante el orden: rango primero, ID al final
+      values: [rango, idNumero], 
     });
 
-    // 4. Verificamos si existía la sala
     if (result.affectedRows === 0) {
       return NextResponse.json(
         { message: "Clasificacion no encontrada" },

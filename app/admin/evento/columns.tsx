@@ -5,7 +5,6 @@ import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EventoActions from "@/components/ui/evento/EventoActions";
 
-// Definición de datos
 export type Evento = {
   id_evento: number;
   Evento: string;
@@ -18,12 +17,10 @@ export type Evento = {
   Nombre_Expositor: string | null;
 };
 
-// Función auxiliar para formatear fechas
 const formatFecha = (fechaString: string) => {
   if (!fechaString) return "";
   const fecha = new Date(fechaString);
-  // Nota: Si la fecha es inválida, fecha.toLocaleString fallará.
-  // Es bueno validar, pero por ahora confiamos en que viene bien de la BD.
+  
   return fecha.toLocaleString("es-MX", {
     day: "numeric",
     month: "short",
@@ -34,7 +31,6 @@ const formatFecha = (fechaString: string) => {
 };
 
 export const columns: ColumnDef<Evento>[] = [
-  // ... (Tus otras columnas ID, Evento, Lugar siguen igual) ...
   {
     accessorKey: "id_evento",
     header: ({ column }) => (
@@ -69,7 +65,6 @@ export const columns: ColumnDef<Evento>[] = [
     ),
   },
 
-  // --- AQUÍ ESTÁ LA CORRECCIÓN DE LA HIDRATACIÓN ---
   {
     accessorKey: "fecha_hora_inicio",
     header: ({ column }) => {
@@ -95,13 +90,11 @@ export const columns: ColumnDef<Evento>[] = [
 
       return (
         <div className="flex flex-col text-sm">
-          {/* AGREGAMOS suppressHydrationWarning AQUÍ */}
           <span className="font-medium text-green-700" suppressHydrationWarning>
             {inicioBonito}
           </span>
 
           {finBonito && (
-            /* Y AQUÍ TAMBIÉN */
             <span
               className="text-muted-foreground text-xs"
               suppressHydrationWarning
@@ -114,7 +107,6 @@ export const columns: ColumnDef<Evento>[] = [
     },
   },
 
-  // ... (Resto de columnas Tipo, Talento, Rol, Actions siguen igual) ...
   {
     accessorKey: "Tipo",
     header: ({ column }) => (
@@ -127,7 +119,7 @@ export const columns: ColumnDef<Evento>[] = [
     ),
   },
   {
-    accessorKey: "Nombre_Talento", // Usamos esto para ordenar, pero la celda mostrará ambos
+    accessorKey: "Nombre_Talento", // Usamos esto para ordenar, pero la celda mostrará ambos tanto talento como expositor pa que se vea bonito
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -143,7 +135,6 @@ export const columns: ColumnDef<Evento>[] = [
 
       return (
         <div className="flex flex-col text-sm">
-          {/* 1. Si hay una Persona (Talento) */}
           {talento && (
             <div className="font-medium">
               {talento}
@@ -155,14 +146,12 @@ export const columns: ColumnDef<Evento>[] = [
             </div>
           )}
 
-          {/* 2. Si hay un Expositor (Empresa) */}
           {expositor && (
             <div className="text-blue-600 text-xs mt-0.5">
               Empresa: {expositor}
             </div>
           )}
 
-          {/* 3. Si no hay nada */}
           {!talento && !expositor && (
             <span className="text-muted-foreground italic">--</span>
           )}

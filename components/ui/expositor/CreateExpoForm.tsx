@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-// Importamos el Select para el "Giro"
 import {
   Select,
   SelectContent,
@@ -25,8 +24,7 @@ import {
   FieldError,
 } from "@/components/ui/field";
 
-// 1. ESQUEMA DE VALIDACIÓN (ZOD)
-// Definimos las reglas del juego antes de empezar
+
 const formSchema = z.object({
   nombre: z.string().min(2, {
     message: "El nombre debe tener al menos 2 caracteres.",
@@ -34,7 +32,7 @@ const formSchema = z.object({
   tipo_expositor: z.string().min(1, {
     message: "Debes seleccionar el giro del expositor.",
   }),
-  numStand: z.string().optional(), // Puede ir vacío si aún no tiene stand
+  numStand: z.string().optional(), 
 });
 
 export default function CreateExpoForm() {
@@ -43,23 +41,22 @@ export default function CreateExpoForm() {
   const {
     register,
     handleSubmit,
-    setValue, // Necesario para controlar el Select manualmente
+    setValue,
     formState: { errors, isSubmitting },
     reset,
-    trigger, // Para forzar la validación del select al cambiar
+    trigger,
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nombre: "",
-      tipo_expositor: "", // Valor inicial vacío
+      tipo_expositor: "",
       numStand: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Enviamos los datos tal cual los definimos en el esquema
-      // (coinciden con la BD: nombre, tipo_expositor, numStand)
+     
       const res = await fetch("/api/expositor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -87,7 +84,6 @@ export default function CreateExpoForm() {
       <h3 className="text-lg font-semibold mb-4">Nuevo expositor</h3>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* --- CAMPO 1: NOMBRE --- */}
         <Field>
           <FieldLabel htmlFor="nombre">Nombre del expositor</FieldLabel>
           <Input
@@ -101,13 +97,12 @@ export default function CreateExpoForm() {
           {errors.nombre && <FieldError>{errors.nombre.message}</FieldError>}
         </Field>
 
-        {/* --- CAMPO 2: GIRO (SELECT) --- */}
         <Field>
           <FieldLabel htmlFor="tipo">Giro / Tipo</FieldLabel>
           <Select
             onValueChange={(value) => {
-              setValue("tipo_expositor", value); // Guardamos el valor
-              trigger("tipo_expositor"); // Quitamos el error visual si existía
+              setValue("tipo_expositor", value); 
+              trigger("tipo_expositor"); 
             }}
           >
             <SelectTrigger
@@ -132,8 +127,6 @@ export default function CreateExpoForm() {
             <FieldError>{errors.tipo_expositor.message}</FieldError>
           )}
         </Field>
-
-        {/* --- CAMPO 3: UBICACIÓN (STAND) --- */}
         <Field>
           <FieldLabel htmlFor="numStand">Ubicación (Stand)</FieldLabel>
           <Input

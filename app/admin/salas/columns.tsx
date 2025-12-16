@@ -3,9 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react"; // Icono de flechas
 import { Button } from "@/components/ui/button";
-import SalaActions from "@/components/ui/salas/SalaActions"; // Tu componente de acciones
+import SalaActions from "@/components/ui/salas/SalaActions"; 
 
-// Definimos la forma de tus datos (igual que en tu page.tsx)
 export type Sala = {
   id_sala: number;
   nombre: string;
@@ -14,13 +13,10 @@ export type Sala = {
 export const columns: ColumnDef<Sala>[] = [
   {
     accessorKey: "id_sala",
-    // ANTES: header: "ID",
-    // AHORA: Lo convertimos en un botón interactivo igual que el nombre
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          // Al hacer click, alterna entre ascendente y descendente
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           ID
@@ -31,7 +27,6 @@ export const columns: ColumnDef<Sala>[] = [
   },
   {
     accessorKey: "nombre",
-    // HEADER PERSONALIZADO: En vez de texto plano, ponemos un botón
     header: ({ column }) => {
       return (
         <Button
@@ -47,9 +42,7 @@ export const columns: ColumnDef<Sala>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const sala = row.original; // Accedemos al objeto sala completo de esta fila
-
-      // Aquí renderizamos tus acciones (Editar/Borrar)
+      const sala = row.original; 
       return <SalaActions sala={sala} />;
     },
   },

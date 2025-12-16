@@ -1,25 +1,24 @@
 "use client";
 
-import { useState } from "react"; // Necesario para controlar estados visuales si hiciera falta
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { format } from "date-fns"; // Para dar formato bonito a la fecha
-import { es } from "date-fns/locale"; // Para que el calendario esté en español
+import { format } from "date-fns"; 
+import { es } from "date-fns/locale";
 import { CalendarIcon, Clock } from "lucide-react"; // Iconos
-import { cn } from "@/lib/utils"; // Utilidad de shadcn para clases
+import { cn } from "@/lib/utils"; 
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar"; // <--- Componente Calendario
+import { Calendar } from "@/components/ui/calendar"; 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"; // <--- Componente Popover (la ventanita flotante)
+} from "@/components/ui/popover"; 
 
 import {
   Select,
@@ -36,11 +35,9 @@ import {
   FieldError,
 } from "@/components/ui/field";
 
-// 1. ESQUEMA (Igual que antes)
 const formSchema = z.object({
   titulo: z.string().min(2, "El título es obligatorio."),
   descripcion: z.string().optional(),
-  // Zod seguirá recibiendo un string ISO (YYYY-MM-DDTHH:mm)
   fecha_hora_inicio: z.string().min(1, "La fecha de inicio es obligatoria."),
   fecha_hora_fin: z.string().optional(),
 
@@ -73,66 +70,55 @@ export default function CreateEventoForm({
     handleSubmit,
     setValue,
     trigger,
-    watch, // Necesitamos 'watch' para leer el valor actual y mostrarselo al calendario
+    watch, 
     formState: { errors, isSubmitting },
     reset,
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  // Observamos los valores para actualizar la UI del calendario
   const fechaInicio = watch("fecha_hora_inicio");
   const fechaFin = watch("fecha_hora_fin");
 
-  // --- LÓGICA MAGISTRAL PARA UNIR FECHA Y HORA ---
-  // Esta función recibe la nueva fecha del calendario y la combina con la hora que ya tenías
+ 
   const handleDateSelect = (
     date: Date | undefined,
     fieldName: "fecha_hora_inicio" | "fecha_hora_fin"
   ) => {
     if (!date) return;
 
-    // 1. Recuperamos el valor actual del formulario
-    const currentValue =
-      fieldName === "fecha_hora_inicio" ? fechaInicio : fechaFin;
-    // 2. Extraemos la hora actual (si existe), si no, por defecto a las 09:00
+    const currentValue = fieldName === "fecha_hora_inicio" ? fechaInicio : fechaFin;
+  
     const timePart = currentValue ? currentValue.split("T")[1] : "09:00";
-
-    // 3. Formateamos la nueva fecha seleccionada a YYYY-MM-DD
     const datePart = format(date, "yyyy-MM-dd");
-
-    // 4. Unimos y guardamos: YYYY-MM-DD + T + HH:mm
     setValue(fieldName, `${datePart}T${timePart}`);
-    trigger(fieldName); // Forzamos validación para quitar errores rojos
+    trigger(fieldName); 
   };
 
-  // Esta función recibe la nueva hora del input y la combina con la fecha que ya tenías
+  
   const handleTimeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     fieldName: "fecha_hora_inicio" | "fecha_hora_fin"
   ) => {
-    const newTime = e.target.value; // Viene como "HH:mm"
+    const newTime = e.target.value; 
 
-    // 1. Recuperamos el valor actual
     const currentValue =
       fieldName === "fecha_hora_inicio" ? fechaInicio : fechaFin;
-    // 2. Extraemos la fecha actual (si existe), si no, usamos la fecha de hoy
     const datePart = currentValue
       ? currentValue.split("T")[0]
       : format(new Date(), "yyyy-MM-dd");
 
-    // 3. Unimos y guardamos
+   
     setValue(fieldName, `${datePart}T${newTime}`);
     trigger(fieldName);
   };
 
-  // Helper para parsear el string del form a objeto Date (para que el calendario sepa qué día marcar)
+  
   const getDateObject = (isoString: string | undefined) => {
     if (!isoString) return undefined;
     return new Date(isoString);
   };
 
-  // Helper para obtener solo la hora para el input (value)
   const getTimeString = (isoString: string | undefined) => {
     if (!isoString) return "";
     return isoString.split("T")[1] || "";
@@ -172,7 +158,6 @@ export default function CreateEventoForm({
     }
   }
 
-  // Helper para selects (Igual que antes)
   const renderSelect = (
     label: string,
     fieldName: any,
@@ -206,7 +191,7 @@ export default function CreateEventoForm({
   return (
     <div className="bg-white  rounded-lg  max-w-3xl">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* TÍTULO Y DESCRIPCIÓN (Igual que antes) */}
+    
         <Field>
           <FieldLabel htmlFor="titulo">Título del Evento</FieldLabel>
           <Input
@@ -226,13 +211,10 @@ export default function CreateEventoForm({
           />
         </Field>
 
-        {/* --- FECHAS CON SHADCN CALENDAR + TIME INPUT --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
-          {/* GRUPO 1: FECHA INICIO */}
           <div className="space-y-2">
             <FieldLabel>Fecha y Hora de Inicio</FieldLabel>
             <div className="flex gap-2">
-              {/* 1. CALENDARIO (POPOVER) */}
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -263,7 +245,6 @@ export default function CreateEventoForm({
                 </PopoverContent>
               </Popover>
 
-              {/* 2. INPUT DE HORA */}
               <div className="w-1/2">
                 <Input
                   type="time"
@@ -278,7 +259,6 @@ export default function CreateEventoForm({
             )}
           </div>
 
-          {/* GRUPO 2: FECHA FIN (Misma lógica) */}
           <div className="space-y-2">
             <FieldLabel>Fecha y Hora de Fin</FieldLabel>
             <div className="flex gap-2">
@@ -327,7 +307,6 @@ export default function CreateEventoForm({
           </div>
         </div>
 
-        {/* --- CATÁLOGOS (Igual que antes) --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-md">
           {renderSelect(
             "Sala",

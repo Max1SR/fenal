@@ -3,9 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react"; // Icono de flechas
 import { Button } from "@/components/ui/button";
-import ExpoActions from "@/components/ui/expositor/ExpoActions"; // Tu componente de acciones
+import ExpoActions from "@/components/ui/expositor/ExpoActions"; 
 
-// Definimos la forma de tus datos (igual que en tu page.tsx)
 export type Expositor = {
   id_expositor: number;
   nombre: string;
@@ -16,13 +15,11 @@ export type Expositor = {
 export const columns: ColumnDef<Expositor>[] = [
   {
     accessorKey: "id_expositor",
-    // ANTES: header: "ID",
-    // AHORA: Lo convertimos en un botón interactivo igual que el Expositor
+    
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          // Al hacer click, alterna entre ascendente y descendente
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           ID
@@ -33,7 +30,6 @@ export const columns: ColumnDef<Expositor>[] = [
   },
   {
     accessorKey: "nombre",
-    // HEADER PERSONALIZADO: En vez de texto plano, ponemos un botón
     header: ({ column }) => {
       return (
         <Button
@@ -79,7 +75,6 @@ export const columns: ColumnDef<Expositor>[] = [
     cell: ({ row }) => {
       const expositor = row.original; // Accedemos al objeto expositor completo de esta fila
 
-      // Aquí renderizamos tus acciones (Editar/Borrar)
       return <ExpoActions expositor={expositor} />;
     },
   },

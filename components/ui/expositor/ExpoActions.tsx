@@ -1,22 +1,17 @@
 "use client";
 
-import { useState } from "react"; // <--- Necesario para abrir/cerrar el modal
+import { useState } from "react"; 
 import { Pencil } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import UpdateExpoForm from "@/components/ui/expositor/UpdateExpoForm";
 import { DeleteExpoDialog } from "@/components/ui/expositor/DeleteExpoDialog";
 
-// Recibimos la SALA COMPLETA, no solo el ID
-export default function ExpoActions({ expositor }: { expositor: any }) {
-
-  // Estado para controlar si el modal de edición está visible
+export default function ExpoActions({ expositor }: { expositor: any }) { 
   const [open, setOpen] = useState(false);
-
- 
 
   return (
     <div className="flex gap-2 justify-end items-center">
-      {/* 1. BOTÓN PARA ABRIR EL MODAL DE EDICIÓN */}
+
       <Button
         variant="outline"
         size="sm"
@@ -28,15 +23,12 @@ export default function ExpoActions({ expositor }: { expositor: any }) {
       </Button>
 
       <UpdateExpoForm open={open} onOpenChange={setOpen} expositorToEdit={expositor} />
-
-      {/* 2. EL FORMULARIO (Ahora sí le pasamos los datos) */}
       <UpdateExpoForm
-        open={open} // Le decimos si debe mostrarse
+        open={open}
         onOpenChange={setOpen} // Le damos el control para cerrarse
-        expositorToEdit={expositor} // Le pasamos los datos de la expositor
+        expositorToEdit={expositor} 
       />
 
-      {/* 3. BOTÓN BORRAR (El que ya tenías) */}
       <DeleteExpoDialog id={expositor.id_expositor} />
     </div>
   );

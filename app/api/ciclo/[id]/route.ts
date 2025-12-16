@@ -11,11 +11,8 @@ interface Props {
 // ==========================================
 export async function PUT(request: Request, { params }: Props) {
   try {
-    // 1. Desempaquetamos el ID (esperando la promesa)
     const { id } = await params;
     const idNumero = parseInt(id);
-
-    // 2. Leemos los datos nuevos
     const body = await request.json();
     const { ciclo } = body;
 
@@ -26,14 +23,11 @@ export async function PUT(request: Request, { params }: Props) {
         { status: 400 }
       );
     }
-
-    // 3. Ejecutamos la actualización en MySQL
     const result: any = await query({
       query: "UPDATE ciclo SET nombre = ? WHERE id_ciclo = ?",
-      values: [ciclo, idNumero], // Importante el orden: ciclo primero, ID al final
+      values: [ciclo, idNumero], 
     });
 
-    // 4. Verificamos si existía la sala
     if (result.affectedRows === 0) {
       return NextResponse.json(
         { message: "Ciclo no encontrado" },
@@ -55,11 +49,9 @@ export async function PUT(request: Request, { params }: Props) {
 // ==========================================
 export async function DELETE(request: Request, { params }: Props) {
   try {
-    // 1. Desempaquetamos el ID
     const { id } = await params;
     const idNumero = parseInt(id);
 
-    // 2. Ejecutamos el borrado
     const result: any = await query({
       query: "DELETE FROM ciclo WHERE id_ciclo = ?",
       values: [idNumero],
@@ -74,13 +66,12 @@ export async function DELETE(request: Request, { params }: Props) {
 
     return NextResponse.json({ message: "Ciclo eliminado correctamente" });
   } catch (error: any) {
-    // Manejo especial para error de llave foránea (si la sala tiene eventos)
     if (error.message.includes("foreign key constraint")) {
       return NextResponse.json(
         {
           error: "No se puede borrar este ciclo porque esta asignada a algun evento.",
         },
-        { status: 409 } // 409 Conflict
+        { status: 409 } 
       );
     }
 

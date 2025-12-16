@@ -1,21 +1,15 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 
-// Definimos el tipo para los parámetros (Next.js 15)
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-// ==========================================
-// MÉTODO PUT: ACTUALIZAR UN EVENTO
-// ==========================================
+
 export async function PUT(request: Request, { params }: Props) {
   try {
-    // 1. Obtener ID de la URL
     const { id } = await params;
     const idEvento = parseInt(id);
-
-    // 2. Obtener datos del formulario
     const body = await request.json();
     const {
       titulo,
@@ -37,7 +31,6 @@ export async function PUT(request: Request, { params }: Props) {
       );
     }
 
-    // 4. Validación Lógica de Fechas (Inicio vs Fin)
     if (fecha_hora_fin) {
       const inicio = new Date(fecha_hora_inicio);
       const fin = new Date(fecha_hora_fin);
@@ -49,9 +42,6 @@ export async function PUT(request: Request, { params }: Props) {
         );
       }
     }
-
-    // 5. Validación de Traslape (Opcional, pero recomendada)
-    // Verificamos que al cambiar de hora, no choque con otro evento (excluyendo el evento actual)
     if (id_sala && fecha_hora_fin) {
       const overlapCheck: any = await query({
         query: `
@@ -73,8 +63,6 @@ export async function PUT(request: Request, { params }: Props) {
       }
     }
 
-    // 6. Ejecutar Actualización (Manejo de Nulos || null)
-    // Aseguramos que si envían cadenas vacías "", se guarden como NULL
     const result: any = await query({
       query: `
         UPDATE Evento SET 
@@ -99,7 +87,7 @@ export async function PUT(request: Request, { params }: Props) {
         id_clasificacion || null,
         id_ciclo || null,
         id_expositor || null,
-        idEvento, // El ID va al final para el WHERE
+        idEvento, 
       ],
     });
 
@@ -114,7 +102,6 @@ export async function PUT(request: Request, { params }: Props) {
   } catch (error: any) {
     console.error("Error al actualizar evento:", error);
 
-    // Error si intentan poner un ID de sala/ciclo que no existe
     if (error.message.includes("foreign key")) {
       return NextResponse.json(
         {

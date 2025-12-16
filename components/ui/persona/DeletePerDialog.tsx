@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react"; // Icono de basurero
-import { toast } from "sonner"; // Usamos tus notificaciones pro
+import { toast } from "sonner"; 
 
 import {
   AlertDialog,
@@ -56,7 +56,6 @@ export function DeletePersonaDialog({ id }: DeletePersonaProps) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      {/* EL GATILLO: El botón rojo que aparecerá en la tabla */}
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
@@ -67,8 +66,6 @@ export function DeletePersonaDialog({ id }: DeletePersonaProps) {
           Borrar
         </Button>
       </AlertDialogTrigger>
-
-      {/* EL CONTENIDO DE LA ALERTA */}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
@@ -81,11 +78,10 @@ export function DeletePersonaDialog({ id }: DeletePersonaProps) {
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
 
-          {/* Botón de confirmación */}
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault(); // Evitamos que se cierre solo
-              handleDelete(); // Ejecutamos nuestra lógica
+              handleDelete();
             }}
             className="bg-red-600 hover:bg-red-700 text-white"
             disabled={isDeleting}

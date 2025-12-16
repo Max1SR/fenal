@@ -27,13 +27,12 @@ import {
 
 import { toast } from "sonner";
 
-// 1. ESQUEMA CORREGIDO
 const formSchema = z.object({
   Expositor: z.string().min(2, {
     message: "El nombre debe tener al menos 2 caracteres.",
   }),
-  Giro: z.string().min(1, { message: "Debes seleccionar un giro." }), // Corregido
-  Ubicacion: z.string().optional(), // Puede ser opcional si el stand no está asignado aún
+  Giro: z.string().min(1, { message: "Debes seleccionar un giro." }),
+  Ubicacion: z.string().optional(), 
 });
 
 export default function UpdateExpoForm({
@@ -46,7 +45,7 @@ export default function UpdateExpoForm({
   const {
     register,
     handleSubmit,
-    setValue, // Necesario para el Select
+    setValue, 
     formState: { errors, isSubmitting },
     reset,
   } = useForm<z.infer<typeof formSchema>>({
@@ -58,14 +57,12 @@ export default function UpdateExpoForm({
     },
   });
 
-  // 2. CARGAR DATOS (MAPEO)
-  // Aquí traducimos de Base de Datos -> Formulario
   useEffect(() => {
     if (expositorToEdit) {
       reset({
-        Expositor: expositorToEdit.nombre, // BD: nombre -> Form: Expositor
-        Giro: expositorToEdit.tipo_expositor, // BD: tipo_expositor -> Form: Giro
-        Ubicacion: expositorToEdit.numStand || "", // BD: numStand -> Form: Ubicacion
+        Expositor: expositorToEdit.nombre, 
+        Giro: expositorToEdit.tipo_expositor,
+        Ubicacion: expositorToEdit.numStand || "", 
       });
     }
   }, [expositorToEdit, reset]);
@@ -79,12 +76,11 @@ export default function UpdateExpoForm({
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          // 3. ENVÍO DE DATOS (MAPEO INVERSO)
-          // Aquí traducimos de Formulario -> Base de Datos
+          
           body: JSON.stringify({
-            nombre: values.Expositor, // Mandamos 'nombre'
-            tipo_expositor: values.Giro, // Mandamos 'tipo_expositor'
-            numStand: values.Ubicacion, // Mandamos 'numStand'
+            nombre: values.Expositor, 
+            tipo_expositor: values.Giro, 
+            numStand: values.Ubicacion, 
           }),
         }
       );
@@ -112,7 +108,6 @@ export default function UpdateExpoForm({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
-          {/* CAMPO NOMBRE (EXPOSITOR) */}
           <Field>
             <FieldLabel htmlFor="Expositor">Nombre</FieldLabel>
             <Input
@@ -126,7 +121,6 @@ export default function UpdateExpoForm({
             )}
           </Field>
 
-          {/* CAMPO GIRO (SELECT) */}
           <Field>
             <FieldLabel htmlFor="Giro">Giro</FieldLabel>
             <Select
@@ -140,13 +134,11 @@ export default function UpdateExpoForm({
               <SelectContent>
                 <SelectItem value="Institución">Institución</SelectItem>
                 <SelectItem value="Editorial">Editorial</SelectItem>
-                {/* Agrega más opciones si es necesario */}
+                <SelectItem value="Studio">Studio</SelectItem>
               </SelectContent>
             </Select>
             {errors.Giro && <FieldError>{errors.Giro.message}</FieldError>}
           </Field>
-
-          {/* CAMPO UBICACION (NUMSTAND) */}
           <Field>
             <FieldLabel htmlFor="Ubicacion">Ubicación (Stand)</FieldLabel>
             <Input

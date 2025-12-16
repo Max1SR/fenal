@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import CreateSalaForm from "@/components/ui/expositor/CreateExpoForm";
-
-// IMPORTAMOS LOS NUEVOS ARCHIVOS
 import { columns, Expositor } from "./columns"; // Paso 1
 import { DataTable } from "@/components/ui/data-table"; // Paso 2
 
@@ -27,7 +25,6 @@ export default async function ExpoPage() {
   return (
     <main className="flex min-h-screen flex-col items-center p-6 px-10">
       <div className="w-full max-w-4xl">
-        {/* ENCABEZADO (Esto queda igual) */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Gestión de Expositores</h1>
 
@@ -47,8 +44,6 @@ export default async function ExpoPage() {
           </Dialog>
         </div>
 
-        {/* --- LA NUEVA TABLA PODEROSA --- */}
-        {/* Simplemente le pasamos las definiciones (columnas) y los datos (expositor) */}
         <DataTable
           columns={columns}
           data={expositor}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react"; // Icono de basurero
-import { toast } from "sonner"; // Usamos tus notificaciones pro
+import { toast } from "sonner"; 
 
 import {
   AlertDialog,
@@ -25,7 +25,7 @@ interface DeleteTipoProps {
 export function DeleteTipoDialog({ id }: DeleteTipoProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
-  const [open, setOpen] = useState(false); // Controlamos si se ve o no
+  const [open, setOpen] = useState(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -37,7 +37,7 @@ export function DeleteTipoDialog({ id }: DeleteTipoProps) {
 
       if (!res.ok) throw new Error("Error al eliminar");
 
-      // Éxito
+
       toast.success("Sala eliminada", {
         description: "El tipo de evento ha sido removido de la base de datos.",
       });
@@ -56,7 +56,6 @@ export function DeleteTipoDialog({ id }: DeleteTipoProps) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      {/* EL GATILLO: El botón rojo que aparecerá en la tabla */}
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
@@ -68,7 +67,6 @@ export function DeleteTipoDialog({ id }: DeleteTipoProps) {
         </Button>
       </AlertDialogTrigger>
 
-      {/* EL CONTENIDO DE LA ALERTA */}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
@@ -82,11 +80,10 @@ export function DeleteTipoDialog({ id }: DeleteTipoProps) {
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
 
-          {/* Botón de confirmación */}
           <AlertDialogAction
             onClick={(e) => {
-              e.preventDefault(); // Evitamos que se cierre solo
-              handleDelete(); // Ejecutamos nuestra lógica
+              e.preventDefault(); 
+              handleDelete(); 
             }}
             className="bg-red-600 hover:bg-red-700 text-white"
             disabled={isDeleting}

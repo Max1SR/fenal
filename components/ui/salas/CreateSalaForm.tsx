@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 
 import { toast } from "sonner";
 
-// Importamos las piezas del nuevo componente Field
 import {
   Field,
   FieldLabel,
@@ -28,7 +27,7 @@ export default function CreateSalaForm() {
   const router = useRouter();
 
   const {
-    register, // Usamos 'register' para conectar los inputs manualmente
+    register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
@@ -64,14 +63,12 @@ export default function CreateSalaForm() {
       <h3 className="text-lg font-semibold mb-4">Nueva Sala</h3>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* --- NUEVO COMPONENTE FIELD --- */}
         <Field>
           <FieldLabel htmlFor="nombre">Nombre de la Sala</FieldLabel>
 
           <Input
             id="nombre"
             placeholder="Ej. Sala Sor Juana Inés"
-            // Conectamos RHF directamente (más simple que antes)
             {...register("nombre")}
             // Añadimos estilo de error si existe
             className={
@@ -82,8 +79,6 @@ export default function CreateSalaForm() {
           <FieldDescription>
             Este es el nombre público que aparecerá en el programa general.
           </FieldDescription>
-
-          {/* Mostramos el error si existe */}
           {errors.nombre && <FieldError>{errors.nombre.message}</FieldError>}
         </Field>
 

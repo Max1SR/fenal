@@ -176,7 +176,6 @@ export default function UpdateEventoForm({
 
   const getDateObject = (isoString: string | undefined) => {
     if (!isoString) return undefined;
-    // Intenta crear fecha, si falla devuelve undefined
     const d = new Date(isoString);
     return isNaN(d.getTime()) ? undefined : d;
   };
@@ -186,14 +185,12 @@ export default function UpdateEventoForm({
     return isoString.split("T")[1].slice(0, 5);
   };
 
-  // --- SUBMIT ---
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!eventoToEdit) return;
 
     try {
       const payload = {
         ...values,
-        // Convertimos strings a números/null para la BD
         id_sala: values.id_sala ? parseInt(values.id_sala) : null,
         id_tipo: values.id_tipo ? parseInt(values.id_tipo) : null,
         id_clasificacion: values.id_clasificacion
@@ -222,7 +219,6 @@ export default function UpdateEventoForm({
     }
   }
 
-  // Helper para Selects
   const renderSelect = (
     label: string,
     fieldName: any,
@@ -371,7 +367,6 @@ export default function UpdateEventoForm({
               </div>
             </div>
 
-            {/* Selects Dinámicos */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-md">
               {renderSelect(
                 "Sala",
@@ -408,8 +403,6 @@ export default function UpdateEventoForm({
                 "id_clasificacion",
                 "rango"
               )}
-
-              {/* Aquí irían Tipos, Ciclos, etc. cuando tengas sus APIs */}
             </div>
 
             <div className="flex justify-end gap-2">

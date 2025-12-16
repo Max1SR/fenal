@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { query } from "@/lib/db"; // Asegúrate que esta ruta sea correcta
+import { query } from "@/lib/db";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -12,8 +12,6 @@ export async function PUT(request: Request, { params }: Props) {
   try {
     const { id } = await params;
     const idNumero = parseInt(id);
-
-    // 1. Recibimos los datos (Ya vienen con los nombres de columna correctos del form)
     const body = await request.json();
     const { nombre, tipo_expositor, numStand } = body;
 
@@ -25,8 +23,6 @@ export async function PUT(request: Request, { params }: Props) {
       );
     }
 
-    // 2. Ejecutamos el UPDATE en la tabla 'Expositor'
-    // OJO: Checa si tu tabla se llama 'Expositor' o 'expositores' en tu BD
     const result: any = await query({
       query: `
         UPDATE Expositor 
@@ -55,16 +51,11 @@ export async function PUT(request: Request, { params }: Props) {
   }
 }
 
-// ==========================================
-// MÉTODO DELETE: Para BORRAR una sala
-// ==========================================
+
 export async function DELETE(request: Request, { params }: Props) {
   try {
-    // 1. Desempaquetamos el ID
     const { id } = await params;
     const idNumero = parseInt(id);
-
-    // 2. Ejecutamos el borrado
     const result: any = await query({
       query: "DELETE FROM expositor WHERE id_expositor = ?",
       values: [idNumero],
@@ -79,7 +70,6 @@ export async function DELETE(request: Request, { params }: Props) {
 
     return NextResponse.json({ message: "Expositor eliminado correctamente" });
   } catch (error: any) {
-    // Manejo especial para error de llave foránea (si la sala tiene eventos)
     if (error.message.includes("foreign key constraint")) {
       return NextResponse.json(
         {

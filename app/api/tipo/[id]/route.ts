@@ -6,20 +6,15 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-// ==========================================
-// MÉTODO PUT
-// ==========================================
 export async function PUT(request: Request, { params }: Props) {
   try {
-    // 1. Desempaquetamos el ID (esperando la promesa)
+
     const { id } = await params;
     const idNumero = parseInt(id);
 
-    // 2. Leemos los datos nuevos
     const body = await request.json();
     const { nombre } = body;
 
-    // Validación básica
     if (!nombre) {
       return NextResponse.json(
         { message: "El nombre es obligatorio" },
@@ -27,13 +22,11 @@ export async function PUT(request: Request, { params }: Props) {
       );
     }
 
-    // 3. Ejecutamos la actualización en MySQL
     const result: any = await query({
       query: "UPDATE Tipo_Evento SET nombre = ? WHERE id_tipo = ?",
-      values: [nombre, idNumero], // Importante el orden: nombre primero, ID al final
+      values: [nombre, idNumero], 
     });
 
-    // 4. Verificamos si existía la sala
     if (result.affectedRows === 0) {
       return NextResponse.json(
         { message: "Sala no encontrada" },
@@ -50,16 +43,12 @@ export async function PUT(request: Request, { params }: Props) {
   }
 }
 
-// ==========================================
-// MÉTODO DELETE:
-// ==========================================
+
 export async function DELETE(request: Request, { params }: Props) {
   try {
-    // 1. Desempaquetamos el ID
     const { id } = await params;
     const idNumero = parseInt(id);
 
-    // 2. Ejecutamos el borrado
     const result: any = await query({
       query: "DELETE FROM Tipo_Evento WHERE id_tipo = ?",
       values: [idNumero],
@@ -74,7 +63,6 @@ export async function DELETE(request: Request, { params }: Props) {
 
     return NextResponse.json({ message: "Sala eliminada correctamente" });
   } catch (error: any) {
-    // Manejo especial para error de llave foránea (si la sala tiene eventos)
     if (error.message.includes("foreign key constraint")) {
       return NextResponse.json(
         {
