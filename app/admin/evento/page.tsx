@@ -24,7 +24,7 @@ async function getEventos(): Promise<Evento[]> {
 }
 
 async function getCatalogos() {
-  const [salas, tipos, clasificaciones, ciclos, expositores] =
+  const [salas, tipos, clasificaciones, ciclos, expositores, personas] =
     await Promise.all([
       query({
         query: "SELECT id_sala, nombre FROM Sala ORDER BY nombre",
@@ -48,6 +48,11 @@ async function getCatalogos() {
         query: "SELECT id_expositor, nombre FROM Expositor ORDER BY nombre",
         values: [],
       }),
+      query({
+        query:
+          "SELECT id_persona, nombre, apellidoPaterno FROM Persona ORDER BY nombre",
+        values: [],
+      }),
     ]);
 
   return {
@@ -56,6 +61,7 @@ async function getCatalogos() {
     clasificaciones: clasificaciones as any[],
     ciclos: ciclos as any[],
     expositores: expositores as any[],
+    personas: personas as any[],
   };
 }
 
@@ -76,7 +82,7 @@ export default async function EventosPage() {
             </DialogTrigger>
 
             {/* EL MODAL CON EL FORMULARIO */}
-            <DialogContent className="sm:max-w-3xl ">
+            <DialogContent className="sm:max-w-3xl max-h-[95vh] overflow-y-auto">
               {" "}
               <DialogHeader>
                 <DialogTitle>Agregar Evento</DialogTitle>
@@ -90,16 +96,12 @@ export default async function EventosPage() {
                 clasificaciones={catalogos.clasificaciones}
                 ciclos={catalogos.ciclos}
                 expositores={catalogos.expositores}
+                personas={catalogos.personas}
               />
             </DialogContent>
           </Dialog>
         </div>
-        <DataTable
-          columns={columns}
-          data={eventos}
-          searchKey="Evento" 
-          w="w-8xl"
-        />
+        <DataTable columns={columns} data={eventos} searchKey="Evento" w="" />
       </div>
     </main>
   );
